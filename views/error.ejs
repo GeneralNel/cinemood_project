@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Tape error' }) %></head>
+<body>
+<%- include('partials/header') %>
+<main class="wrap section" style="text-align:center">
+  <h1 class="glitch" data-text="STATIC">STATIC</h1>
+  <p class="handwritten"><%= message || 'something broke' %></p>
+  <p><a class="btn btn-mag" href="/">Back to tonight</a></p>
+</main>
+<%- include('partials/footer') %>
+</body>
+</html>

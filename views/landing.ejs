@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Cinemood — mood boards for movies' }) %></head>
+<body>
+<%- include('partials/header') %>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="kicker">side a / side b</span>
+    <h1 class="glitch" data-text="CINEMOOD">CINEMOOD</h1>
+    <p class="sub">A late-night zine for cinema. Make a mood, get the films, drop them on a board, share the URL. Snowed-in Saturdays. Rainy Sundays. Heartbroken Tuesdays. Pick your weather.</p>
+    <div class="ctas">
+      <% if (user) { %>
+        <a class="btn btn-solid" href="/create">Compose a board</a>
+        <a class="btn btn-mag" href="/dashboard">Your shelf</a>
+      <% } else { %>
+        <a class="btn btn-solid" href="/signup">Make a board</a>
+        <a class="btn btn-mag" href="#tonight">See tonight</a>
+      <% } %>
+    </div>
+    <div class="demo-strip" aria-hidden="true">
+      <% for (let i = 0; i < 8; i++) { %><div class="poster"></div><% } %>
+    </div>
+  </section>
+
+  <section id="tonight" class="tonight">
+    <div class="head">
+      <div>
+        <h2>Tonight's Wall</h2>
+        <span class="blurb">it's <%= bucket || 'night' %> somewhere — these fit the hour</span>
+      </div>
+      <% if (!user) { %><a class="btn btn-sm btn-ghost" href="/signup">Tape your own</a><% } %>
+    </div>
+    <% if (feed && feed.length) { %>
+      <div class="grid-4">
+        <% feed.forEach(b => { %>
+          <a class="board-card" href="/board/<%= b.slug %>">
+            <span class="label"><%= b.title %></span>
+            <div class="mosaic">
+              <% for (let i = 0; i < 5; i++) { %>
+                <div class="tile"><% if (b.cover && b.cover[i]) { %><img src="<%= b.cover[i] %>" alt=""><% } %></div>
+              <% } %>
+            </div>
+            <div class="tags">
+              <% (b.moodTags || []).slice(0, 3).forEach(t => { %><span class="tag"><%= t %></span><% }) %>
+            </div>
+            <div class="meta">
+              <span>@<%= b.owner && b.owner.username || 'anon' %></span>
+              <span class="vis public">public</span>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="dash-empty">
+        <p class="hand">no boards taped yet tonight. be the first.</p>
+        <% if (!user) { %><p><a class="btn btn-solid" href="/signup">Make one</a></p><% } else { %><p><a class="btn btn-solid" href="/create">Compose one</a></p><% } %>
+      </div>
+    <% } %>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

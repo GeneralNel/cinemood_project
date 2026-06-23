@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Editing — ' + board.title }) %></head>
+<body>
+<%- include('../partials/header') %>
+
+<main class="wrap section">
+  <header class="dash-head">
+    <div class="stack" style="flex:1">
+      <div class="field">
+        <label for="boardTitle">title</label>
+        <input id="boardTitle" class="paper-label" value="<%= board.title %>" maxlength="80">
+      </div>
+      <div class="field">
+        <label for="boardTags">mood tags (comma separated)</label>
+        <input id="boardTags" value="<%= (board.moodTags || []).join(', ') %>" placeholder="rainy-sunday, slow, neon-noir">
+      </div>
+    </div>
+    <div class="toolbar" style="align-self:flex-end">
+      <button class="btn btn-ghost" id="visibilityBtn" type="button"><%= board.visibility === 'public' ? 'Public' : 'Private' %></button>
+      <button class="btn btn-solid" id="saveBtn" type="button">Save</button>
+      <span class="handwritten" id="saveStatus" style="min-width:90px;text-align:right;opacity:.6">saved</span>
+    </div>
+  </header>
+
+  <div class="editor">
+    <aside class="sidebar">
+      <section class="panel">
+        <span class="eyebrow">find films</span>
+        <div class="field" style="margin-top:.5rem">
+          <input id="filmSearch" placeholder="search a title…">
+        </div>
+        <div id="filmSearchResults" class="stack" style="margin-top:.75rem; max-height:280px; overflow:auto"></div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">stickers</span>
+        <div class="add-tray" id="stickerTray" style="margin-top:.5rem"></div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">swatches</span>
+        <div class="add-tray" id="swatchTray" style="margin-top:.5rem"></div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">notes</span>
+        <div class="toolbar" style="margin-top:.5rem">
+          <button class="btn btn-sm btn-ghost" id="addNote" type="button">Add a note</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">layer</span>
+        <div class="toolbar" style="margin-top:.5rem">
+          <button class="btn btn-sm btn-ghost" id="layerUp" type="button">Forward</button>
+          <button class="btn btn-sm btn-ghost" id="layerDown" type="button">Back</button>
+          <button class="btn btn-sm btn-mag"   id="deleteSelBtn" type="button">Remove</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">danger</span>
+        <div class="toolbar" style="margin-top:.5rem">
+          <button class="btn btn-sm btn-mag" id="deleteBtn" type="button">Eject tape</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="canvas-shell editor-canvas">
+      <div class="canvas" id="canvas"></div>
+    </section>
+    <section class="editor-stack">
+      <div class="stack-editor" id="stackHost"></div>
+    </section>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<script id="board-data" type="application/json"><%- JSON.stringify(board).replace(/</g, '\\u003c') %></script>
+<script id="stickers-data" type="application/json"><%- JSON.stringify(stickers).replace(/</g, '\\u003c') %></script>
+<script type="module" src="/js/canvas-editor.js"></script>
+</body>
+</html>

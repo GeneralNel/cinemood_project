@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Sign in — Cinemood' }) %></head>
+<body>
+<%- include('../partials/header') %>
+
+<main class="wrap auth-page">
+  <section class="auth-card">
+    <span class="kicker">good to see you</span>
+    <h2>Press play</h2>
+    <% if (errors && errors.length) { %>
+      <ul class="errors">
+        <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+      </ul>
+    <% } %>
+    <form method="post" action="/login" autocomplete="on">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="next" value="<%= next || '' %>">
+      <div class="field">
+        <label for="login">username or email</label>
+        <input id="login" name="login" required value="<%= form.login || '' %>" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">password</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password">
+      </div>
+      <div class="actions">
+        <button class="btn btn-solid btn-block" type="submit">Sign in</button>
+      </div>
+      <p class="alt">no account? <a href="/signup">make one</a></p>
+    </form>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+</body>
+</html>

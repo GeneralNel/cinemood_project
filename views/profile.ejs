@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: '@' + profile.username + ' — Cinemood' }) %></head>
+<body>
+<%- include('partials/header') %>
+
+<main class="wrap">
+  <header class="profile-head">
+    <h1><%= profile.displayName || profile.username %></h1>
+    <span class="handle">@<%= profile.username %></span>
+    <% if (profile.bio) { %><p class="blurb"><%= profile.bio %></p><% } %>
+  </header>
+
+  <% if (boards && boards.length) { %>
+    <section class="grid">
+      <% boards.forEach(b => { %>
+        <a class="board-card" href="/board/<%= b.slug %>">
+          <span class="label"><%= b.title %></span>
+          <div class="mosaic">
+            <% for (let i = 0; i < 5; i++) { %>
+              <div class="tile"><% if (b.cover && b.cover[i]) { %><img src="<%= b.cover[i] %>" alt=""><% } %></div>
+            <% } %>
+          </div>
+          <div class="tags">
+            <% (b.moodTags || []).slice(0, 3).forEach(t => { %><span class="tag"><%= t %></span><% }) %>
+          </div>
+          <div class="meta">
+            <span><%= new Date(b.updatedAt).toLocaleDateString() %></span>
+            <span class="vis public">public</span>
+          </div>
+        </a>
+      <% }) %>
+    </section>
+  <% } else { %>
+    <div class="dash-empty">
+      <p class="hand">@<%= profile.username %> hasn't taped a public board yet.</p>
+    </div>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

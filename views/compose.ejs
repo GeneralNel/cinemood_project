@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Compose — Cinemood' }) %></head>
+<body>
+<%- include('partials/header') %>
+
+<main class="wrap section">
+  <header class="dash-head">
+    <div>
+      <span class="eyebrow">composer</span>
+      <h1>What's tonight?</h1>
+      <p class="who">Spin the dials, draw a card or three. We'll pull films.</p>
+    </div>
+  </header>
+
+  <%- include('partials/composer') %>
+</main>
+
+<%- include('partials/footer') %>
+<script type="module" src="/js/composer.js"></script>
+</body>
+</html>

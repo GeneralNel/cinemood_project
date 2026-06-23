@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: board.title + ' — Cinemood' }) %></head>
+<body>
+<%- include('../partials/header') %>
+
+<main class="wrap section">
+  <header class="dash-head">
+    <div>
+      <span class="tape"><%= board.title %></span>
+      <p class="who" style="margin-top:.75rem">tape by <a href="/u/<%= board.owner.username %>">@<%= board.owner.username %></a></p>
+      <div class="tags" style="margin-top:.5rem">
+        <% (board.moodTags || []).forEach(t => { %><span class="tag"><%= t %></span><% }) %>
+      </div>
+      <% if (board.description) { %><p style="margin-top:.75rem;max-width:48rem"><%= board.description %></p><% } %>
+    </div>
+    <div class="toolbar" style="align-self:flex-end">
+      <button class="btn btn-ghost" id="copyShareBtn" type="button">Copy link</button>
+      <% if (isOwner) { %><a class="btn btn-mag" href="/board/<%= board.slug %>/edit">Edit</a><% } %>
+    </div>
+  </header>
+
+  <section class="viewer-shell" id="viewerShell">
+    <div class="canvas" id="viewerCanvas"></div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<script id="board-data" type="application/json"><%- JSON.stringify(board).replace(/</g, '\\u003c') %></script>
+<script id="stickers-data" type="application/json"><%- JSON.stringify(stickers).replace(/</g, '\\u003c') %></script>
+<script type="module" src="/js/canvas-viewer.js"></script>
+</body>
+</html>

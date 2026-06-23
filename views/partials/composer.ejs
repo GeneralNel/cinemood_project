@@ -1,0 +1,46 @@
+<section class="composer" id="composer" data-mode="<%= typeof mode !== 'undefined' ? mode : 'create' %>">
+  <span class="kicker">mood composer</span>
+  <h2>Dial in. Draw cards.</h2>
+
+  <div class="dials">
+    <div class="dial" data-dial="energy">
+      <span class="label">Energy</span>
+      <div class="face"><span class="needle"></span><span class="hub"></span></div>
+      <input type="range" min="0" max="100" value="50">
+      <div class="legend"><span>still</span><span>wired</span></div>
+    </div>
+    <div class="dial" data-dial="warmth">
+      <span class="label">Warmth</span>
+      <div class="face"><span class="needle"></span><span class="hub"></span></div>
+      <input type="range" min="0" max="100" value="50">
+      <div class="legend"><span>cold</span><span>warm</span></div>
+    </div>
+    <div class="dial" data-dial="familiarity">
+      <span class="label">Familiarity</span>
+      <div class="face"><span class="needle"></span><span class="hub"></span></div>
+      <input type="range" min="0" max="100" value="50">
+      <div class="legend"><span>comfort rewatch</span><span>first-time</span></div>
+    </div>
+  </div>
+
+  <div class="card-deck">
+    <div class="deck-head">
+      <span class="label">Draw up to 3 cards</span>
+      <span class="count" id="cardCount">0 / 3</span>
+    </div>
+    <div class="cards" id="cards"><!-- filled by composer.js --></div>
+  </div>
+
+  <div class="composer-actions">
+    <button class="btn btn-ghost" id="composerReset" type="button">Reset</button>
+    <button class="btn btn-solid" id="composerRun" type="button">Pull films</button>
+  </div>
+
+  <div class="results-tray" id="results">
+    <h3>Films for this mood</h3>
+    <div class="film-strip" id="filmStrip"></div>
+    <div class="composer-actions">
+      <button class="btn btn-mag" id="startBoard" type="button">Start a board with picks</button>
+    </div>
+  </div>
+</section>
