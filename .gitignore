@@ -1,0 +1,10 @@
+node_modules
+.env
+.env.local
+public/styles/main.css
+public/styles/main.css.map
+.DS_Store
+coverage
+*.log
+.vscode
+.idea

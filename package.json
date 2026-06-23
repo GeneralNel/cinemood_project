@@ -1,0 +1,41 @@
+{
+  "name": "cinemood",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Late-night zine for cinema. Mood boards of films, dressed in 80s VHS.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently -k -n server,sass -c magenta,cyan \"nodemon server.js\" \"sass --watch public/styles/main.scss:public/styles/main.css\"",
+    "build:css": "sass public/styles/main.scss public/styles/main.css --style=compressed --no-source-map",
+    "start": "node server.js",
+    "test": "jest --runInBand --forceExit",
+    "seed": "node scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "sass": "^1.77.8",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": ["/node_modules/"]
+  }
+}
