@@ -16,6 +16,7 @@ const boardsRoutes = require('./routes/boards');
 const filmsRoutes = require('./routes/films');
 const moodRoutes = require('./routes/mood');
 const feedRoutes = require('./routes/feed');
+const watchlistRoutes = require('./routes/watchlist');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -74,6 +75,7 @@ app.use('/api/boards', boardsRoutes);
 app.use('/api/films', filmsRoutes);
 app.use('/api/mood', moodRoutes);
 app.use('/api/feed', feedRoutes);
+app.use('/api/watchlist', watchlistRoutes);
 
 app.use((req, res) => {
   res.status(404);

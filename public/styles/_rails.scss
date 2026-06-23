@@ -1,0 +1,38 @@
+@use 'tokens' as *;
+
+.rail-shell {
+  position: relative;
+}
+
+[data-rail] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.rail-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: rgba($ink, .92);
+  border: 1px solid rgba($cyan, .4);
+  color: $cream;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: $face-display;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 6;
+  padding: 0;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .5);
+  transition: opacity .15s ease, transform .15s ease, background .15s ease, border-color .15s ease;
+  &.left  { left: -8px; }
+  &.right { right: -8px; }
+  &:hover { background: $magenta; border-color: $magenta; }
+  &.hidden { opacity: 0; pointer-events: none; transform: translateY(-50%) scale(.7); }
+  @media (hover: none) and (pointer: coarse) { display: none; }
+}
