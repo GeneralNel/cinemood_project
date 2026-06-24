@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Cinemood — mood boards for movies' }) %></head>
+<body>
+<%- include('partials/header', { q: q }) %>
+
+<main class="app-shell">
+
+  <% if (q) { %>
+    <div class="bucket-strip">
+      <span class="dot"></span>
+      <p class="greet">results for <strong>"<%= q %>"</strong> · <em><%= (tonight && tonight.length) || 0 %> board<%= (tonight && tonight.length) === 1 ? '' : 's' %><% if (films && films.length) { %>, <%= films.length %> film<%= films.length === 1 ? '' : 's' %><% } %></em></p>
+      <a class="action-link" href="/">clear search</a>
+    </div>
+  <% } else { %>
+    <div class="bucket-strip">
+      <span class="dot"></span>
+      <p class="greet">
+        <% if (user) { %>
+          hey <strong>@<%= user.username %></strong> — it's <em><%= bucketLabel %></em>, here's what fits the hour.
+        <% } else { %>
+          it's <em><%= bucketLabel %></em> somewhere — these mixtapes fit the hour.
+        <% } %>
+      </p>
+    </div>
+
+    <% if (moodChips && moodChips.length) { %>
+      <div class="rail-shell">
+        <nav class="mood-chips" data-rail aria-label="Browse by mood">
+          <% moodChips.forEach(c => { %>
+            <a href="/?mood=<%= c.id %>" class="<%= activeMood === c.id ? 'on' : '' %>"><%= c.label %></a>
+          <% }) %>
+        </nav>
+      </div>
+    <% } %>
+  <% } %>
+
+  <% if (q && films && films.length) { %>
+    <div class="section-head">
+      <h2>Films &amp; series</h2>
+      <span class="blurb">from TMDB</span>
+    </div>
+    <div class="rail-shell">
+      <div class="film-strip" data-rail>
+        <% films.forEach(f => { %>
+          <div class="film">
+            <div class="poster"><% if (f.poster) { %><img src="<%= f.poster %>" alt="" loading="lazy"><% } %></div>
+            <div class="meta">
+              <span class="title"><%= f.title %></span>
+              <span class="year"><%= f.year || '' %><% if (f.kind === 'tv') { %> · series<% } %></span>
+            </div>
+            <% if (user) { %>
+              <button class="save" type="button"
+                data-watch-add="<%= f.tmdbId %>"
+                data-title="<%= f.title %>"
+                data-year="<%= f.year || '' %>"
+                data-poster="<%= f.poster || '' %>"
+                aria-label="save to watchlist">♡</button>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (user && !q) { %>
+    <%- include('partials/watchlist-rail', { watchlist }) %>
+  <% } %>
+
+  <% if (user && shelf && shelf.length && !q) { %>
+    <div class="section-head">
+      <h2>Your shelf</h2>
+      <a class="more" href="/u/<%= user.username %>">view all →</a>
+    </div>
+    <div class="masonry">
+      <a class="cta-pin" href="/create"><span class="plus">+</span>start a new board</a>
+      <% shelf.forEach(b => { %>
+        <%- include('partials/pin', { board: b, showVis: true }) %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (tonight && tonight.length) { %>
+    <div class="section-head">
+      <h2><%= q ? 'Matching boards' : "Tonight's wall" %></h2>
+      <% if (!q) { %><span class="blurb">tuned to <%= bucketLabel %></span><% } %>
+    </div>
+    <div class="masonry">
+      <% tonight.forEach(b => { %>
+        <%- include('partials/pin', { board: b, showVis: false }) %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (fresh && fresh.length && !q) { %>
+    <div class="section-head">
+      <h2>Fresh from the wall</h2>
+      <span class="blurb">just taped</span>
+    </div>
+    <div class="masonry">
+      <% fresh.forEach(b => { %>
+        <%- include('partials/pin', { board: b, showVis: false }) %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if ((!tonight || !tonight.length) && (!fresh || !fresh.length) && (!shelf || !shelf.length) && (!films || !films.length)) { %>
+    <div class="empty-note">
+      <p class="hand">
+        <% if (q) { %>no tapes or films match "<%= q %>" — try another word.<% } else { %>nothing on the wall yet — be the first to tape one up.<% } %>
+      </p>
+      <% if (!q) { %>
+        <p>
+          <% if (user) { %>
+            <a class="btn btn-solid" href="/create">Compose a board</a>
+          <% } else { %>
+            <a class="btn btn-solid" href="/signup">Sign up to compose</a>
+          <% } %>
+        </p>
+      <% } %>
+    </div>
+  <% } %>
+
+</main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<%- include('partials/footer') %>
+<script type="module" src="/js/watchlist.js"></script>
+<script type="module" src="/js/rails.js"></script>
+</body>
+</html>

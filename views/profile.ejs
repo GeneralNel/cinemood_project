@@ -4,36 +4,37 @@
 <body>
 <%- include('partials/header') %>
 
-<main class="wrap">
-  <header class="profile-head">
-    <h1><%= profile.displayName || profile.username %></h1>
-    <span class="handle">@<%= profile.username %></span>
-    <% if (profile.bio) { %><p class="blurb"><%= profile.bio %></p><% } %>
-  </header>
+<section class="profile-banner">
+  <div class="profile-id">
+    <div class="profile-avatar"><%= (profile.displayName || profile.username || '?').charAt(0).toUpperCase() %></div>
+    <div class="who">
+      <h1><%= profile.displayName || profile.username %></h1>
+      <span class="handle">@<%= profile.username %></span>
+      <span class="stats"><%= boards.length %> public board<%= boards.length === 1 ? '' : 's' %></span>
+      <% if (profile.bio) { %><p style="margin:0;color:rgba(255,248,225,.75);max-width:48rem"><%= profile.bio %></p><% } %>
+    </div>
+    <% if (isSelf) { %>
+      <div class="own-actions">
+        <a class="btn btn-mag" href="/create">Compose</a>
+        <a class="btn btn-ghost" href="/settings">Settings</a>
+      </div>
+    <% } %>
+  </div>
+</section>
 
+<main class="app-shell">
   <% if (boards && boards.length) { %>
-    <section class="grid">
+    <div class="masonry">
       <% boards.forEach(b => { %>
-        <a class="board-card" href="/board/<%= b.slug %>">
-          <span class="label"><%= b.title %></span>
-          <div class="mosaic">
-            <% for (let i = 0; i < 5; i++) { %>
-              <div class="tile"><% if (b.cover && b.cover[i]) { %><img src="<%= b.cover[i] %>" alt=""><% } %></div>
-            <% } %>
-          </div>
-          <div class="tags">
-            <% (b.moodTags || []).slice(0, 3).forEach(t => { %><span class="tag"><%= t %></span><% }) %>
-          </div>
-          <div class="meta">
-            <span><%= new Date(b.updatedAt).toLocaleDateString() %></span>
-            <span class="vis public">public</span>
-          </div>
-        </a>
+        <%- include('partials/pin', { board: b, showVis: false }) %>
       <% }) %>
-    </section>
+    </div>
   <% } else { %>
-    <div class="dash-empty">
+    <div class="empty-note">
       <p class="hand">@<%= profile.username %> hasn't taped a public board yet.</p>
+      <% if (isSelf) { %>
+        <p><a class="btn btn-solid" href="/create">Compose your first board</a></p>
+      <% } %>
     </div>
   <% } %>
 </main>

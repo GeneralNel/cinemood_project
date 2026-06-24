@@ -4,30 +4,80 @@
 <body>
 <%- include('../partials/header') %>
 
-<main class="wrap section">
-  <header class="dash-head">
-    <div>
+<main class="detail-shell">
+  <header class="detail-head">
+    <div class="left">
       <span class="tape"><%= board.title %></span>
-      <p class="who" style="margin-top:.75rem">tape by <a href="/u/<%= board.owner.username %>">@<%= board.owner.username %></a></p>
-      <div class="tags" style="margin-top:.5rem">
-        <% (board.moodTags || []).forEach(t => { %><span class="tag"><%= t %></span><% }) %>
-      </div>
-      <% if (board.description) { %><p style="margin-top:.75rem;max-width:48rem"><%= board.description %></p><% } %>
+      <p class="who-line">tape by <a href="/u/<%= board.owner.username %>">@<%= board.owner.username %></a> · <%= new Date(board.updatedAt).toLocaleDateString() %></p>
+      <% if (board.moodTags && board.moodTags.length) { %>
+        <div class="tag-row">
+          <% board.moodTags.forEach(t => { %><span class="chip"><%= t %></span><% }) %>
+        </div>
+      <% } %>
+      <% if (board.description) { %><p style="max-width:48rem;color:rgba(255,248,225,.85)"><%= board.description %></p><% } %>
     </div>
-    <div class="toolbar" style="align-self:flex-end">
-      <button class="btn btn-ghost" id="copyShareBtn" type="button">Copy link</button>
-      <% if (isOwner) { %><a class="btn btn-mag" href="/board/<%= board.slug %>/edit">Edit</a><% } %>
+    <div class="actions">
+      <button class="btn btn-ghost btn-sm" id="copyShareBtn" type="button">Copy link</button>
+      <% if (isOwner) { %><a class="btn btn-mag btn-sm" href="/board/<%= board.slug %>/edit">Edit</a><% } %>
     </div>
   </header>
 
   <section class="viewer-shell" id="viewerShell">
     <div class="canvas" id="viewerCanvas"></div>
+    <div class="viewer-overlay">drag · scroll to zoom</div>
   </section>
+
+  <% if (films && films.length) { %>
+    <div class="section-head" style="margin-top:2rem">
+      <h2>Films on this tape</h2>
+      <% if (user) { %><span class="blurb">tap ♡ to save</span><% } %>
+    </div>
+    <div class="rail-shell">
+      <div class="film-strip" data-rail>
+        <% films.forEach(f => { %>
+        <div class="film">
+          <div class="poster"><% if (f.poster) { %><img src="<%= f.poster %>" alt="" loading="lazy"><% } %></div>
+          <div class="meta">
+            <span class="title"><%= f.title || 'Untitled' %></span>
+            <% if (f.year) { %><span class="year"><%= f.year %></span><% } %>
+          </div>
+          <% if (user) { %>
+            <button class="save" type="button"
+              data-watch-add="<%= f.tmdbId %>"
+              data-title="<%= f.title || '' %>"
+              data-year="<%= f.year || '' %>"
+              data-poster="<%= f.poster || '' %>"
+              data-from-board="<%= board.slug %>"
+              aria-label="save to watchlist">♡</button>
+          <% } %>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (moreLike && moreLike.length) { %>
+    <div class="more-like">
+      <div class="section-head">
+        <h2>More like this</h2>
+        <span class="blurb">same mood, different tape</span>
+      </div>
+      <div class="masonry">
+        <% moreLike.forEach(b => { %>
+          <%- include('../partials/pin', { board: b, showVis: false }) %>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
 </main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
 
 <%- include('../partials/footer') %>
 <script id="board-data" type="application/json"><%- JSON.stringify(board).replace(/</g, '\\u003c') %></script>
 <script id="stickers-data" type="application/json"><%- JSON.stringify(stickers).replace(/</g, '\\u003c') %></script>
 <script type="module" src="/js/canvas-viewer.js"></script>
+<script type="module" src="/js/watchlist.js"></script>
+<script type="module" src="/js/rails.js"></script>
 </body>
 </html>
