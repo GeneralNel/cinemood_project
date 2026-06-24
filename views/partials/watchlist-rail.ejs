@@ -1,0 +1,26 @@
+<section class="watchlist" id="watchlistRail" data-watchlist>
+  <div class="head">
+    <h3>Up next on your watchlist</h3>
+    <span class="count" data-watch-count><%= (watchlist && watchlist.length) || 0 %> saved</span>
+  </div>
+  <% if (watchlist && watchlist.length) { %>
+    <div class="rail-shell">
+      <div class="rail" data-watch-rail data-rail>
+        <% watchlist.forEach(w => { %>
+          <article class="watch-card" data-tmdb-id="<%= w.tmdbId %>">
+            <div class="poster"><% if (w.poster) { %><img src="<%= w.poster %>" alt="" loading="lazy"><% } %></div>
+            <div class="info">
+              <div class="t"><%= w.title || 'Untitled' %></div>
+              <% if (w.year) { %><div class="y"><%= w.year %></div><% } %>
+            </div>
+            <button type="button" class="remove" data-watch-remove="<%= w.tmdbId %>" aria-label="Remove from watchlist">×</button>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="watch-empty" data-watch-empty>
+      nothing on the watchlist yet — tap the <strong style="color:#ff006e">+</strong> on any poster to save it for later.
+    </div>
+  <% } %>
+</section>

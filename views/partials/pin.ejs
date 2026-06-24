@@ -1,0 +1,40 @@
+<%
+  const cov = (board.cover || []).filter(Boolean);
+  const n = Math.min(cov.length, 5);
+  const owner = board.owner || {};
+  const ownerName = owner.username || 'anon';
+  const ownerLabel = (owner.displayName || owner.username || '?').charAt(0).toUpperCase();
+%>
+<a class="pin" href="/board/<%= board.slug %>">
+  <% if (n === 0) { %>
+    <div class="cover cover-empty">
+      <span class="tape-label">untitled mixtape</span>
+    </div>
+  <% } else { %>
+    <div class="cover c-<%= n %>">
+      <% for (let i = 0; i < n; i++) { %>
+        <div class="tile"><img src="<%= cov[i] %>" alt="" loading="lazy"></div>
+      <% } %>
+    </div>
+  <% } %>
+  <div class="body">
+    <h3 class="title"><%= board.title || 'untitled tape' %></h3>
+    <% if (board.moodTags && board.moodTags.length) { %>
+      <div class="chips">
+        <% board.moodTags.slice(0, 3).forEach(t => { %><span class="chip"><%= t %></span><% }) %>
+      </div>
+    <% } %>
+    <div class="meta-row">
+      <span class="who">
+        <span class="avatar-xs"><%= ownerLabel %></span>
+        @<%= ownerName %>
+      </span>
+      <% if (typeof showVis === 'undefined' || showVis) { %>
+        <span class="vis <%= board.visibility %>"><%= board.visibility %></span>
+      <% } %>
+    </div>
+  </div>
+  <div class="pin-hover" aria-hidden="true">
+    <span class="open-tag">open</span>
+  </div>
+</a>
