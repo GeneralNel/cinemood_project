@@ -1,0 +1,72 @@
+@use 'tokens' as *;
+
+.hero {
+  position: relative;
+  padding: $step-7 0 $step-8;
+  text-align: center;
+}
+
+.hero .kicker {
+  font-family: $face-hand;
+  color: $magenta;
+  font-size: 1.5rem;
+  transform: rotate(-1deg);
+  display: inline-block;
+  margin-bottom: $step-3;
+}
+
+.hero h1 {
+  @include chrome-text;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  text-shadow: 0 0 28px rgba($cyan, .35);
+}
+
+.hero .sub {
+  max-width: 38rem;
+  margin: $step-4 auto 0;
+  color: rgba($cream, .8);
+  font-size: 1.05rem;
+}
+
+.hero .ctas {
+  margin-top: $step-6;
+  display: flex;
+  gap: $step-3;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.demo-strip {
+  margin-top: $step-7;
+  display: flex;
+  gap: $step-3;
+  overflow-x: auto;
+  padding: $step-3 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.demo-strip .poster {
+  flex: 0 0 auto;
+  width: 160px;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(135deg, $panel, $panel-2);
+  border: 1px solid rgba($cyan, .35);
+  border-radius: $radius-md;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+.demo-strip .poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  @include scanlines(.20);
+}
+
+.cassette-row {
+  display: grid;
+  gap: $step-4;
+  grid-template-columns: 1fr;
+  @include tablet  { grid-template-columns: repeat(2, 1fr); }
+  @include desktop { grid-template-columns: repeat(3, 1fr); }
+}

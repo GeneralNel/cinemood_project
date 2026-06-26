@@ -1,0 +1,71 @@
+@use 'tokens' as *;
+
+.profile-banner {
+  position: relative;
+  padding: $step-7 $step-5 $step-5;
+  margin-bottom: $step-5;
+  background:
+    linear-gradient(180deg, rgba($magenta, .18), transparent 70%),
+    radial-gradient(60% 80% at 30% 0%, rgba($cyan, .25), transparent),
+    rgba($void, .8);
+  border-bottom: 1px solid rgba($cyan, .2);
+  &::after {
+    content: '';
+    position: absolute; inset: 0;
+    @include scanlines(.08);
+    pointer-events: none;
+  }
+}
+
+.profile-id {
+  position: relative;
+  z-index: 1;
+  max-width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  gap: $step-5;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-avatar {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $magenta, $cyan);
+  color: $void;
+  display: grid; place-items: center;
+  font-family: $face-display;
+  font-size: 2.2rem;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .5), 0 0 0 4px rgba($magenta, .15);
+}
+
+.profile-id .who {
+  display: flex;
+  flex-direction: column;
+  gap: $step-2;
+  h1 {
+    margin: 0;
+    font-family: $face-display;
+    font-size: 2rem;
+    letter-spacing: .02em;
+    @include chrome-text;
+  }
+  .handle {
+    font-family: $face-hand;
+    color: $magenta;
+    font-size: 1.2rem;
+  }
+  .stats {
+    font-family: $face-body;
+    font-size: .78rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba($cream, .65);
+  }
+}
+
+.profile-id .own-actions {
+  margin-left: auto;
+  display: flex;
+  gap: $step-3;
+}

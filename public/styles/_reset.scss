@@ -1,0 +1,42 @@
+@use 'tokens' as *;
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: $ink;
+  color: $cream;
+  font-family: $face-body;
+  font-size: 16px;
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba($magenta, .22), transparent 70%),
+    radial-gradient(900px 500px at 110% 20%, rgba($cyan, .18), transparent 65%),
+    linear-gradient(180deg, $ink 0%, $void 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  @include scanlines(.10);
+  mix-blend-mode: overlay;
+  z-index: 9999;
+}
+
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; }
+a { color: $cyan; text-decoration: none; }
+a:hover { color: $magenta; }
+
+h1, h2, h3, h4 { font-family: $face-display; font-weight: 400; letter-spacing: .02em; }
+h1 { font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.05; }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.6rem); }
+
+::selection { background: $magenta; color: $cream; }

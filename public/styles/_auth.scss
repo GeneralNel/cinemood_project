@@ -1,0 +1,37 @@
+@use 'tokens' as *;
+@use 'sass:color';
+
+.auth-page {
+  min-height: 78vh;
+  display: grid;
+  place-items: center;
+  padding: $step-6 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 26rem;
+  padding: $step-6;
+  background: rgba($panel, .65);
+  border: 1px solid rgba($magenta, .35);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-glow;
+  position: relative;
+}
+.auth-card h2 {
+  margin: 0 0 $step-2;
+  @include chrome-text;
+}
+.auth-card .kicker {
+  font-family: $face-hand;
+  color: $cyan;
+  transform: rotate(-1deg);
+  display: inline-block;
+  margin-bottom: $step-4;
+}
+.auth-card form .field + .field { margin-top: $step-4; }
+.auth-card .actions { margin-top: $step-5; display: flex; flex-direction: column; gap: $step-3; }
+.auth-card .alt { margin-top: $step-4; font-size: .85rem; color: rgba($cream, .65); text-align: center; }
+.auth-card .alt a { color: $cyan; }
+.auth-card .errors { margin: 0 0 $step-4; padding: $step-3 $step-4; border-left: 3px solid $blood; background: rgba($blood, .1); color: color.adjust($blood, $lightness: 15%); font-size: .85rem; list-style: none; }
+.auth-card .errors li + li { margin-top: $step-2; }

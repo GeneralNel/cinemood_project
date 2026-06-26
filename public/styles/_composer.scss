@@ -1,0 +1,171 @@
+@use 'tokens' as *;
+@use 'sass:color';
+
+.composer {
+  padding: $step-6;
+  background:
+    linear-gradient(180deg, rgba($panel-2, .8), rgba($panel, .8)),
+    linear-gradient(135deg, rgba($magenta, .15), rgba($cyan, .15));
+  border: 1px solid rgba($cyan, .3);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-glow;
+}
+
+.composer h2 {
+  margin: 0 0 $step-2;
+  @include chrome-text;
+}
+.composer .kicker { font-family: $face-hand; color: $cyan; transform: rotate(-1deg); display: inline-block; margin-bottom: $step-4; }
+
+.dials {
+  display: grid;
+  gap: $step-5;
+  grid-template-columns: 1fr;
+  margin-top: $step-5;
+  @include tablet { grid-template-columns: repeat(3, 1fr); }
+}
+
+.dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $step-3;
+  padding: $step-4;
+  background: rgba(0, 0, 0, .35);
+  border: 1px solid rgba($cyan, .25);
+  border-radius: $radius-md;
+}
+
+.dial .face {
+  position: relative;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, color.adjust($panel, $lightness: 8%), $panel 60%, $void 100%);
+  border: 2px solid rgba($cyan, .4);
+  box-shadow:
+    inset 0 0 14px rgba(0, 0, 0, .6),
+    0 0 16px rgba($cyan, .25);
+}
+.dial .needle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 56px;
+  background: $magenta;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, -100%) rotate(0deg);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba($magenta, .8);
+  transition: transform .25s ease;
+  pointer-events: none;
+}
+.dial .hub {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  background: $cyan;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba($cyan, .8);
+  pointer-events: none;
+}
+.dial input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba($cyan, .25);
+  border-radius: 2px;
+  outline: none;
+}
+.dial input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  background: $magenta;
+  border-radius: 50%;
+  box-shadow: $glow-mag;
+  cursor: pointer;
+}
+.dial input[type=range]::-moz-range-thumb {
+  width: 18px; height: 18px;
+  background: $magenta;
+  border-radius: 50%;
+  box-shadow: $glow-mag;
+  border: none;
+  cursor: pointer;
+}
+.dial .legend {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: .7rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba($cream, .6);
+}
+.dial .label {
+  font-family: $face-body;
+  font-weight: 700;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: $cyan;
+  font-size: .8rem;
+}
+
+.card-deck {
+  margin-top: $step-6;
+}
+.card-deck .deck-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: $step-3;
+}
+.card-deck .deck-head .label {
+  font-family: $face-body;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  font-size: .8rem;
+  color: $cyan;
+}
+.card-deck .deck-head .count { font-family: $face-hand; color: $magenta; }
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $step-3;
+}
+
+.mood-card {
+  position: relative;
+  padding: $step-4 $step-5;
+  background: $bone;
+  color: $ink;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(0, 0, 0, .15);
+  font-family: $face-hand;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transform: rotate(var(--tilt, -1deg));
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .35);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.mood-card:hover { transform: rotate(0) translateY(-2px); box-shadow: 0 10px 22px rgba(0, 0, 0, .5); }
+.mood-card.picked { background: $magenta; color: $cream; box-shadow: $glow-mag; }
+.mood-card.disabled { opacity: .35; pointer-events: none; }
+
+.composer-actions {
+  margin-top: $step-6;
+  display: flex;
+  gap: $step-3;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.results-tray {
+  margin-top: $step-6;
+  padding-top: $step-5;
+  border-top: 1px dashed rgba($cyan, .3);
+  display: none;
+}
+.results-tray.on { display: block; }
+.results-tray h3 { font-family: $face-display; color: $cream; }

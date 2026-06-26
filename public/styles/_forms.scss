@@ -1,0 +1,48 @@
+@use 'tokens' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $step-2;
+}
+
+.field label {
+  font-family: $face-body;
+  font-size: .75rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: $cyan;
+}
+
+.field input,
+.field textarea,
+.field select {
+  background: rgba(0, 0, 0, .35);
+  color: $cream;
+  border: 1px solid rgba($cyan, .35);
+  border-radius: $radius-sm;
+  padding: .75rem .9rem;
+  font: inherit;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: $magenta;
+  box-shadow: 0 0 0 3px rgba($magenta, .25);
+}
+
+.field .hint { font-size: .75rem; color: rgba($cream, .55); }
+.field .error { font-size: .75rem; color: $blood; font-family: $face-hand; }
+
+.field input.paper-label {
+  background: $bone;
+  color: $ink;
+  font-family: $face-hand;
+  font-size: 1.4rem;
+  border: none;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .4);
+  transform: rotate(-.75deg);
+}

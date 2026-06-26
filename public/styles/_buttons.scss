@@ -1,0 +1,46 @@
+@use 'tokens' as *;
+@use 'sass:color';
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $step-2;
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 1px solid $cyan;
+  color: $cyan;
+  font-family: $face-body;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  border-radius: $radius-sm;
+  transition: transform .12s ease, box-shadow .15s ease, color .15s ease, background .15s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: $glow-cyan;
+  background: rgba($cyan, .12);
+}
+.btn:active { transform: translateY(0); }
+
+.btn-mag {
+  border-color: $magenta;
+  color: $magenta;
+  &:hover { box-shadow: $glow-mag; background: rgba($magenta, .12); }
+}
+
+.btn-solid {
+  background: $magenta;
+  color: $cream;
+  border-color: $magenta;
+  &:hover { background: color.adjust($magenta, $lightness: 6%); box-shadow: $glow-mag; color: $cream; }
+}
+
+.btn-ghost {
+  border-color: rgba($cream, .35);
+  color: $cream;
+  &:hover { border-color: $cream; background: rgba($cream, .06); }
+}
+
+.btn-sm { padding: .4rem .75rem; font-size: .75rem; }
+.btn-block { width: 100%; justify-content: center; }

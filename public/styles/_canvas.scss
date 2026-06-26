@@ -1,0 +1,142 @@
+@use 'tokens' as *;
+
+.editor {
+  display: grid;
+  gap: $step-4;
+  grid-template-columns: 1fr;
+  margin-top: $step-5;
+  @include desktop {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+.editor-canvas { display: none; @include tablet { display: block; } }
+.editor-stack  { display: block;  @include tablet { display: none; } }
+
+.editor .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $step-4;
+}
+
+.editor .toolbar {
+  display: flex;
+  gap: $step-2;
+  flex-wrap: wrap;
+}
+
+.canvas-shell {
+  position: relative;
+  background:
+    radial-gradient(rgba($cyan, .12) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(180deg, $void, $ink);
+  border: 1px solid rgba($cyan, .3);
+  border-radius: $radius-md;
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 70vh;
+  touch-action: none;
+}
+
+.canvas .el {
+  position: absolute;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+}
+.canvas .el.dragging { cursor: grabbing; z-index: 999 !important; }
+.canvas .el.selected { outline: 2px dashed $magenta; outline-offset: 4px; }
+
+.canvas .el.poster {
+  width: 140px;
+  aspect-ratio: 2 / 3;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .55);
+  background: $panel;
+}
+.canvas .el.poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.canvas .el.poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  @include scanlines(.15);
+}
+
+.canvas .el.sticker { width: 80px; height: 80px; }
+.canvas .el.sticker svg { width: 100%; height: 100%; }
+
+.canvas .el.swatch {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .4);
+  border: 2px solid rgba($cream, .35);
+}
+
+.canvas .el.note {
+  padding: $step-3 $step-4;
+  background: $bone;
+  color: $ink;
+  font-family: $face-hand;
+  font-size: 1.2rem;
+  max-width: 260px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .45);
+  border-radius: 2px;
+}
+
+.handles {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+}
+.handles .h {
+  position: absolute;
+  width: 14px; height: 14px;
+  background: $magenta;
+  border: 2px solid $cream;
+  border-radius: 50%;
+  pointer-events: auto;
+}
+.handles .h.rotate { top: -22px; left: calc(50% - 7px); cursor: grab; background: $cyan; }
+.handles .h.scale  { bottom: -7px; right: -7px; cursor: nwse-resize; }
+
+.viewer-shell {
+  position: relative;
+  background:
+    radial-gradient(rgba($cyan, .12) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(180deg, $void, $ink);
+  border: 1px solid rgba($cyan, .3);
+  border-radius: $radius-md;
+  overflow: hidden;
+  width: 100%;
+  height: min(80vh, 800px);
+  touch-action: none;
+}
+.viewer-shell .canvas { transform-origin: 0 0; }
+
+.add-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $step-2;
+}
+.add-tray .swatch-chip {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba($cream, .4);
+  cursor: pointer;
+}
+.add-tray .sticker-chip {
+  width: 44px; height: 44px;
+  border-radius: $radius-sm;
+  background: rgba(0, 0, 0, .35);
+  border: 1px solid rgba($cyan, .3);
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+.add-tray .sticker-chip svg { width: 28px; height: 28px; }

@@ -1,0 +1,19 @@
+@use 'tokens' as *;
+
+.dash-head {
+  display: flex;
+  flex-direction: column;
+  gap: $step-3;
+  margin-bottom: $step-6;
+  @include tablet { flex-direction: row; align-items: end; justify-content: space-between; }
+}
+.dash-head h1 { @include chrome-text; }
+.dash-head .who { color: rgba($cream, .65); font-size: .9rem; }
+
+.dash-empty {
+  padding: $step-7 $step-5;
+  text-align: center;
+  border: 2px dashed rgba($cyan, .35);
+  border-radius: $radius-lg;
+}
+.dash-empty .hand { font-family: $face-hand; color: $magenta; font-size: 1.5rem; }

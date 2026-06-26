@@ -1,0 +1,58 @@
+@use 'tokens' as *;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  background: rgba($void, .65);
+  border-bottom: 1px solid rgba($cyan, .2);
+}
+
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $step-4;
+  padding: $step-3 0;
+}
+
+.brand {
+  font-family: $face-display;
+  font-size: 1.75rem;
+  letter-spacing: .04em;
+  @include chrome-text;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: $step-2;
+}
+.brand .dot {
+  width: 10px; height: 10px;
+  background: $magenta;
+  border-radius: 50%;
+  box-shadow: $glow-mag;
+  display: inline-block;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: $step-4;
+  font-family: $face-body;
+  font-size: .8rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+}
+.site-nav a { color: rgba($cream, .8); }
+.site-nav a:hover { color: $magenta; }
+.site-nav a.active { color: $cyan; }
+
+.site-footer {
+  padding: $step-7 0 $step-6;
+  color: rgba($cream, .5);
+  font-size: .8rem;
+  text-align: center;
+  border-top: 1px dashed rgba($cyan, .2);
+  margin-top: $step-8;
+}

@@ -1,0 +1,117 @@
+@use 'tokens' as *;
+
+.detail-shell {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: $step-4;
+  @include desktop { padding: $step-5; }
+}
+
+.detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $step-4;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $step-4;
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: $step-2;
+    flex: 1;
+    min-width: 0;
+  }
+  .tape {
+    align-self: flex-start;
+    font-size: 1.25rem;
+  }
+  .who-line {
+    font-family: $face-body;
+    font-size: .85rem;
+    color: rgba($cream, .75);
+    a { color: $cyan; text-decoration: none; }
+    a:hover { color: $magenta; }
+  }
+  .tag-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .tag-row .chip {
+    font-size: .68rem;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba($magenta, .15);
+    border: 1px solid rgba($magenta, .35);
+    color: rgba($cream, .85);
+    text-transform: lowercase;
+    letter-spacing: .04em;
+  }
+  .actions {
+    display: flex;
+    gap: $step-2;
+    align-items: center;
+  }
+}
+
+.viewer-shell {
+  position: relative;
+  width: 100%;
+  height: min(72vh, 760px);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.2)),
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba($cyan, .04) 30px 31px),
+    repeating-linear-gradient(90deg, transparent 0 30px, rgba($cyan, .04) 30px 31px),
+    $ink;
+  border: 1px solid rgba($cyan, .25);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.viewer-shell .canvas {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: 0 0;
+}
+.viewer-shell .canvas .el {
+  position: absolute;
+}
+.viewer-shell .canvas .el.poster {
+  width: 140px;
+  img { width: 100%; display: block; box-shadow: 0 10px 22px rgba(0,0,0,.5); border-radius: $radius-sm; }
+}
+.viewer-shell .canvas .el.note {
+  width: 260px;
+  padding: $step-3;
+  background: $bone;
+  font-family: $face-hand;
+  font-size: 1.2rem;
+  border-radius: $radius-sm;
+  box-shadow: 0 8px 22px rgba(0,0,0,.4);
+}
+.viewer-shell .canvas .el.sticker svg { width: 100px; height: 100px; display: block; }
+.viewer-shell .canvas .el.swatch { width: 100px; height: 100px; border-radius: $radius-sm; }
+
+.viewer-overlay {
+  position: absolute;
+  inset: auto $step-3 $step-3 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $step-2;
+  align-items: flex-end;
+  pointer-events: none;
+  font-family: $face-body;
+  font-size: .7rem;
+  color: rgba($cream, .55);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.more-like {
+  margin-top: $step-7;
+}
+.more-like h2 {
+  margin: 0 0 $step-3;
+  font-family: $face-display;
+  font-size: 1.2rem;
+  @include chrome-text;
+}

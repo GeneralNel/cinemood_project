@@ -1,0 +1,76 @@
+@use 'tokens' as *;
+
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 $step-4;
+  @include tablet  { padding: 0 $step-5; }
+  @include desktop { padding: 0 $step-6; }
+}
+
+.stack > * + * { margin-top: $step-4; }
+.stack-lg > * + * { margin-top: $step-6; }
+
+.grid {
+  display: grid;
+  gap: $step-4;
+  grid-template-columns: 1fr;
+  @include tablet  { grid-template-columns: repeat(2, 1fr); gap: $step-5; }
+  @include desktop { grid-template-columns: repeat(3, 1fr); gap: $step-6; }
+}
+
+.grid-4 {
+  display: grid;
+  gap: $step-4;
+  grid-template-columns: 1fr;
+  @include tablet  { grid-template-columns: repeat(2, 1fr); }
+  @include desktop { grid-template-columns: repeat(4, 1fr); }
+}
+
+.section {
+  padding: $step-7 0;
+  @include desktop { padding: $step-8 0; }
+}
+
+.eyebrow {
+  font-family: $face-body;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  font-size: .75rem;
+  color: $cyan;
+}
+
+.handwritten {
+  font-family: $face-hand;
+  color: $magenta;
+  font-size: 1.25rem;
+  transform: rotate(-1.5deg);
+  display: inline-block;
+}
+
+.tape {
+  display: inline-block;
+  padding: .25rem .75rem;
+  background: rgba($amber, .85);
+  color: $ink;
+  font-family: $face-hand;
+  transform: rotate(-2deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .4);
+}
+
+.panel {
+  background: rgba($panel, .55);
+  border: 1px solid rgba($cyan, .25);
+  border-radius: $radius-lg;
+  padding: $step-5;
+  backdrop-filter: blur(6px);
+  @include desktop { padding: $step-6; }
+}
+
+.panel-noir {
+  background: rgba(0, 0, 0, .35);
+  border: 1px solid rgba($magenta, .35);
+  border-radius: $radius-md;
+  padding: $step-5;
+}
