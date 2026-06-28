@@ -9,8 +9,14 @@
   <% if (q) { %>
     <div class="bucket-strip">
       <span class="dot"></span>
-      <p class="greet">results for <strong>"<%= q %>"</strong> · <em><%= (tonight && tonight.length) || 0 %> board<%= (tonight && tonight.length) === 1 ? '' : 's' %><% if (films && films.length) { %>, <%= films.length %> film<%= films.length === 1 ? '' : 's' %><% } %></em></p>
+      <p class="greet">movies &amp; series for <strong>"<%= q %>"</strong> · <em><%= films.length %> result<%= films.length === 1 ? '' : 's' %></em></p>
       <a class="action-link" href="/">clear search</a>
+    </div>
+  <% } else if (boardQ) { %>
+    <div class="bucket-strip">
+      <span class="dot"></span>
+      <p class="greet">boards matching <strong>"<%= boardQ %>"</strong> · <em><%= tonight.length %> tape<%= tonight.length === 1 ? '' : 's' %></em></p>
+      <a class="action-link" href="/">clear</a>
     </div>
   <% } else { %>
     <div class="bucket-strip">
@@ -22,6 +28,13 @@
           it's <em><%= bucketLabel %></em> somewhere — these mixtapes fit the hour.
         <% } %>
       </p>
+      <details class="browse-boards">
+        <summary>Browse boards</summary>
+        <form method="get" action="/" role="search">
+          <input type="search" name="board_q" placeholder="title, mood, or slug…" maxlength="80" autofocus>
+          <button class="btn btn-sm btn-mag" type="submit">Find</button>
+        </form>
+      </details>
     </div>
 
     <% if (moodChips && moodChips.length) { %>
@@ -35,11 +48,7 @@
     <% } %>
   <% } %>
 
-  <% if (q && films && films.length) { %>
-    <div class="section-head">
-      <h2>Films &amp; series</h2>
-      <span class="blurb">from TMDB</span>
-    </div>
+  <% if (q && films.length) { %>
     <div class="rail-shell">
       <div class="film-strip" data-rail>
         <% films.forEach(f => { %>
@@ -63,11 +72,11 @@
     </div>
   <% } %>
 
-  <% if (user && !q) { %>
+  <% if (user && !q && !boardQ) { %>
     <%- include('partials/watchlist-rail', { watchlist }) %>
   <% } %>
 
-  <% if (user && shelf && shelf.length && !q) { %>
+  <% if (user && shelf.length && !q && !boardQ) { %>
     <div class="section-head">
       <h2>Your shelf</h2>
       <a class="more" href="/u/<%= user.username %>">view all →</a>
@@ -80,10 +89,10 @@
     </div>
   <% } %>
 
-  <% if (tonight && tonight.length) { %>
+  <% if (tonight.length && !q) { %>
     <div class="section-head">
-      <h2><%= q ? 'Matching boards' : "Tonight's wall" %></h2>
-      <% if (!q) { %><span class="blurb">tuned to <%= bucketLabel %></span><% } %>
+      <h2><%= boardQ ? 'Boards found' : "Tonight's wall" %></h2>
+      <% if (!boardQ) { %><span class="blurb">tuned to <%= bucketLabel %></span><% } %>
     </div>
     <div class="masonry">
       <% tonight.forEach(b => { %>
@@ -92,7 +101,7 @@
     </div>
   <% } %>
 
-  <% if (fresh && fresh.length && !q) { %>
+  <% if (fresh.length && !q && !boardQ) { %>
     <div class="section-head">
       <h2>Fresh from the wall</h2>
       <span class="blurb">just taped</span>
@@ -104,20 +113,24 @@
     </div>
   <% } %>
 
-  <% if ((!tonight || !tonight.length) && (!fresh || !fresh.length) && (!shelf || !shelf.length) && (!films || !films.length)) { %>
+  <% if (q && !films.length) { %>
     <div class="empty-note">
-      <p class="hand">
-        <% if (q) { %>no tapes or films match "<%= q %>" — try another word.<% } else { %>nothing on the wall yet — be the first to tape one up.<% } %>
+      <p class="hand">no movies or series match "<%= q %>" — try another word.</p>
+    </div>
+  <% } else if (boardQ && !tonight.length) { %>
+    <div class="empty-note">
+      <p class="hand">no tapes match "<%= boardQ %>" — try a mood or slug.</p>
+    </div>
+  <% } else if (!tonight.length && !fresh.length && !shelf.length && !q && !boardQ) { %>
+    <div class="empty-note">
+      <p class="hand">nothing on the wall yet — be the first to tape one up.</p>
+      <p>
+        <% if (user) { %>
+          <a class="btn btn-solid" href="/create">Compose a board</a>
+        <% } else { %>
+          <a class="btn btn-solid" href="/signup">Sign up to compose</a>
+        <% } %>
       </p>
-      <% if (!q) { %>
-        <p>
-          <% if (user) { %>
-            <a class="btn btn-solid" href="/create">Compose a board</a>
-          <% } else { %>
-            <a class="btn btn-solid" href="/signup">Sign up to compose</a>
-          <% } %>
-        </p>
-      <% } %>
     </div>
   <% } %>
 
