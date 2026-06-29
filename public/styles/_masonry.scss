@@ -77,6 +77,36 @@
   }
 }
 
+.chips-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $step-2;
+  overflow: hidden;
+
+  .mood-chips {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chip-arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: rgba($panel, .7);
+    border: 1px solid rgba($cyan, .3);
+    color: $cream;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+    &:hover { border-color: $magenta; color: $magenta; }
+  }
+}
+
 .mood-chips {
   display: flex;
   gap: $step-2;
@@ -84,6 +114,8 @@
   padding: $step-2 0 $step-4;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
   a {
     flex: 0 0 auto;
     scroll-snap-align: start;

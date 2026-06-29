@@ -38,12 +38,14 @@
     </div>
 
     <% if (moodChips && moodChips.length) { %>
-      <div class="rail-shell">
-        <nav class="mood-chips" data-rail aria-label="Browse by mood">
+      <div class="chips-wrap">
+        <button class="chip-arrow" id="chipPrev" aria-label="Scroll left">&#8249;</button>
+        <nav class="mood-chips" id="moodChips" aria-label="Browse by mood">
           <% moodChips.forEach(c => { %>
             <a href="/?mood=<%= c.id %>" class="<%= activeMood === c.id ? 'on' : '' %>"><%= c.label %></a>
           <% }) %>
         </nav>
+        <button class="chip-arrow" id="chipNext" aria-label="Scroll right">&#8250;</button>
       </div>
     <% } %>
   <% } %>
@@ -52,20 +54,16 @@
     <div class="rail-shell">
       <div class="film-strip" data-rail>
         <% films.forEach(f => { %>
-          <div class="film">
+          <div class="film" role="button" tabindex="0"
+            data-film-id="<%= f.tmdbId %>"
+            data-film-title="<%= f.title %>"
+            data-film-year="<%= f.year || '' %>"
+            data-film-poster="<%= f.poster || '' %>">
             <div class="poster"><% if (f.poster) { %><img src="<%= f.poster %>" alt="" loading="lazy"><% } %></div>
             <div class="meta">
               <span class="title"><%= f.title %></span>
               <span class="year"><%= f.year || '' %><% if (f.kind === 'tv') { %> · series<% } %></span>
             </div>
-            <% if (user) { %>
-              <button class="save" type="button"
-                data-watch-add="<%= f.tmdbId %>"
-                data-title="<%= f.title %>"
-                data-year="<%= f.year || '' %>"
-                data-poster="<%= f.poster || '' %>"
-                aria-label="save to watchlist">♡</button>
-            <% } %>
           </div>
         <% }) %>
       </div>
@@ -135,9 +133,15 @@
 
 </main>
 
-<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<div class="film-modal-overlay" id="filmModal" role="dialog" aria-modal="true" aria-label="Film details">
+  <div class="film-modal">
+    <button class="film-modal-close" id="filmModalClose" aria-label="Close">×</button>
+    <div class="film-modal-body" id="filmModalBody"></div>
+  </div>
+</div>
 
 <%- include('partials/footer') %>
 <script type="module" src="/js/watchlist.js"></script>
+<script type="module" src="/js/film-modal.js"></script>
 </body>
 </html>

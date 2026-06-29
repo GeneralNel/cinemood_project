@@ -35,21 +35,17 @@
     <div class="rail-shell">
       <div class="film-strip" data-rail>
         <% films.forEach(f => { %>
-        <div class="film">
+        <div class="film" role="button" tabindex="0"
+          data-film-id="<%= f.tmdbId %>"
+          data-film-title="<%= f.title || '' %>"
+          data-film-year="<%= f.year || '' %>"
+          data-film-poster="<%= f.poster || '' %>"
+          data-film-from-board="<%= board.slug %>">
           <div class="poster"><% if (f.poster) { %><img src="<%= f.poster %>" alt="" loading="lazy"><% } %></div>
           <div class="meta">
             <span class="title"><%= f.title || 'Untitled' %></span>
             <% if (f.year) { %><span class="year"><%= f.year %></span><% } %>
           </div>
-          <% if (user) { %>
-            <button class="save" type="button"
-              data-watch-add="<%= f.tmdbId %>"
-              data-title="<%= f.title || '' %>"
-              data-year="<%= f.year || '' %>"
-              data-poster="<%= f.poster || '' %>"
-              data-from-board="<%= board.slug %>"
-              aria-label="save to watchlist">♡</button>
-          <% } %>
         </div>
         <% }) %>
       </div>
@@ -71,12 +67,18 @@
   <% } %>
 </main>
 
-<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<div class="film-modal-overlay" id="filmModal" role="dialog" aria-modal="true" aria-label="Film details">
+  <div class="film-modal">
+    <button class="film-modal-close" id="filmModalClose" aria-label="Close">×</button>
+    <div class="film-modal-body" id="filmModalBody"></div>
+  </div>
+</div>
 
 <%- include('../partials/footer') %>
 <script id="board-data" type="application/json"><%- JSON.stringify(board).replace(/</g, '\\u003c') %></script>
 <script id="stickers-data" type="application/json"><%- JSON.stringify(stickers).replace(/</g, '\\u003c') %></script>
 <script type="module" src="/js/canvas-viewer.js"></script>
 <script type="module" src="/js/watchlist.js"></script>
+<script type="module" src="/js/film-modal.js"></script>
 </body>
 </html>
