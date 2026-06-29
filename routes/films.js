@@ -7,7 +7,7 @@ router.get('/search', async (req, res, next) => {
     const q = String(req.query.q || '').trim().slice(0, 80);
     if (!q) return res.json({ results: [] });
     const results = await tmdb.search(q);
-    await tmdb.cacheMany(results).catch(() => null);
+    await tmdb.cacheMany(results);
     res.json({ results });
   } catch (e) { next(e); }
 });

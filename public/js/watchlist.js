@@ -1,18 +1,5 @@
-const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
-
-async function api(method, path, body) {
-  const res = await fetch(path, {
-    method,
-    headers: { 'content-type': 'application/json', 'x-csrf-token': csrf },
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: 'same-origin'
-  });
-  if (res.status === 401) {
-    throw new Error('auth');
-  }
-  if (!res.ok) throw new Error('api ' + res.status);
-  return res.json();
-}
+import { api } from './api.js';
+import { escapeHtml } from './fx.js';
 
 function updateCount(delta) {
   const el = document.querySelector('[data-watch-count]');
@@ -37,10 +24,6 @@ function renderCard(item) {
   return a;
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
-
 document.addEventListener('click', async (e) => {
   const rm = e.target.closest('[data-watch-remove]');
   if (rm) {
@@ -48,7 +31,7 @@ document.addEventListener('click', async (e) => {
     const card = rm.closest('.watch-card');
     if (card) card.style.opacity = '.4';
     try {
-      await api('DELETE', `/api/watchlist/${id}`);
+      await api.del(`/api/watchlist/${id}`);
       card?.remove();
       updateCount(-1);
       const rail = document.querySelector('[data-watch-rail]');
@@ -81,7 +64,7 @@ document.addEventListener('click', async (e) => {
     };
     add.classList.add('on');
     try {
-      const r = await api('POST', '/api/watchlist', payload);
+      const r = await api.post('/api/watchlist', payload);
       if (r.already) return;
       const rail = document.querySelector('[data-watch-rail]');
       const empty = document.querySelector('[data-watch-empty]');

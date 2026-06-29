@@ -1,4 +1,5 @@
 import { api } from './api.js';
+import { escapeHtml } from './fx.js';
 
 const PICK_MAX = 3;
 const picked = new Set();
@@ -79,12 +80,6 @@ function renderFilmStrip(host, films) {
     });
     host.appendChild(wrap);
   });
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
 }
 
 async function run() {

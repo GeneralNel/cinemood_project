@@ -1,3 +1,5 @@
+import { escapeHtml } from './fx.js';
+
 const boardData = JSON.parse(document.getElementById('board-data').textContent);
 const stickerLib = JSON.parse(document.getElementById('stickers-data').textContent || '[]');
 
@@ -15,10 +17,6 @@ if (copyBtn) {
 const stickerMap = Object.fromEntries(stickerLib.map(s => [s.id, s.svg]));
 
 const canvas = document.getElementById('viewerCanvas');
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
 
 function render() {
   canvas.innerHTML = '';

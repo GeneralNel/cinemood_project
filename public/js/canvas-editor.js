@@ -1,4 +1,5 @@
 import { api } from './api.js';
+import { escapeHtml, randId } from './fx.js';
 
 const boardData = JSON.parse(document.getElementById('board-data').textContent);
 
@@ -32,12 +33,7 @@ let dirty = false;
 function nextZ() {
   return (state.elements.reduce((m, e) => Math.max(m, e.zIndex || 0), 0) || 0) + 1;
 }
-function nid() { return Math.random().toString(36).slice(2, 10); }
 function mark() { dirty = true; status.textContent = 'unsaved'; status.classList.add('on'); }
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
 
 function render() {
   canvas.innerHTML = '';
@@ -146,7 +142,7 @@ function startScale(e, el) {
 }
 
 function addElement(el) {
-  el.id = el.id || nid();
+  el.id = el.id || randId();
   el.zIndex = nextZ();
   el.x = el.x ?? (canvas.clientWidth / 2 - 60);
   el.y = el.y ?? (canvas.clientHeight / 2 - 80);

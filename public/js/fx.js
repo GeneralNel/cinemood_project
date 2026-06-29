@@ -21,3 +21,13 @@ export function wireInternalLinkGlitch() {
 export function csrf() {
   return document.querySelector('meta[name=csrf-token]')?.content || '';
 }
+
+export function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+export function randId() {
+  return Math.random().toString(36).slice(2, 10);
+}

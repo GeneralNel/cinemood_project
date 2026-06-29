@@ -1,13 +1,12 @@
-const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+import { api } from './api.js';
+import { csrf, escapeHtml as esc, randId } from './fx.js';
 
-// Chip arrow scroll
 const chipsRail = document.getElementById('moodChips');
 if (chipsRail) {
   document.getElementById('chipPrev')?.addEventListener('click', () => chipsRail.scrollBy({ left: -240, behavior: 'smooth' }));
   document.getElementById('chipNext')?.addEventListener('click', () => chipsRail.scrollBy({ left: 240, behavior: 'smooth' }));
 }
 
-// Modal elements
 const overlay = document.getElementById('filmModal');
 const bodyEl = document.getElementById('filmModalBody');
 
@@ -19,25 +18,6 @@ function closeModal() {
 document.getElementById('filmModalClose')?.addEventListener('click', closeModal);
 overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-async function apiFetch(method, path, body) {
-  const res = await fetch(path, {
-    method,
-    headers: { 'content-type': 'application/json', 'x-csrf-token': csrf },
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: 'same-origin'
-  });
-  if (!res.ok) throw Object.assign(new Error(res.status), { status: res.status });
-  return res.json();
-}
-
-function esc(s) {
-  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function randId() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 function openModal(html) {
   bodyEl.innerHTML = html;
@@ -55,7 +35,7 @@ document.addEventListener('click', async (e) => {
 
   let film;
   try {
-    ({ film } = await apiFetch('GET', `/api/films/${tmdbId}`));
+    ({ film } = await api.get(`/api/films/${tmdbId}`));
   } catch {
     openModal('<div class="fm-loading">Could not load film details.</div>');
     return;
@@ -65,7 +45,7 @@ document.addEventListener('click', async (e) => {
   const genres = rawGenres.join(', ');
   const runtime = film.runtime ? `${film.runtime} min` : '';
   const vote = film.voteAverage ? `★ ${Number(film.voteAverage).toFixed(1)}` : '';
-  const isLoggedIn = !!csrf;
+  const isLoggedIn = !!csrf();
 
   openModal(`
     <div class="fm-poster">
@@ -107,9 +87,8 @@ document.addEventListener('click', async (e) => {
 
   if (!isLoggedIn) return;
 
-  // Populate boards select
   try {
-    const { boards } = await apiFetch('GET', '/api/boards');
+    const { boards } = await api.get('/api/boards');
     const sel = document.getElementById('fmBoardSel');
     if (!sel) return;
     if (boards && boards.length) {
@@ -129,7 +108,7 @@ document.addEventListener('click', async (e) => {
 
       fb.textContent = 'Adding…';
       try {
-        const { board } = await apiFetch('GET', `/api/boards/by-slug/${boardSlug}`);
+        const { board } = await api.get(`/api/boards/by-slug/${boardSlug}`);
         const newEl = {
           id: randId(),
           type: 'poster',
@@ -140,7 +119,7 @@ document.addEventListener('click', async (e) => {
           zIndex: board.elements.length,
           payload: { tmdbId: film.tmdbId, poster: film.poster, title: film.title, year: film.year }
         };
-        await apiFetch('PATCH', `/api/boards/${boardId}`, { elements: [...board.elements, newEl] });
+        await api.patch(`/api/boards/${boardId}`, { elements: [...board.elements, newEl] });
         fb.textContent = `Added to "${board.title}" ✓`;
       } catch {
         fb.textContent = 'Could not add to board.';
@@ -151,7 +130,6 @@ document.addEventListener('click', async (e) => {
     if (row) row.hidden = true;
   }
 
-  // Watchlist feedback
   document.getElementById('fmWatchBtn')?.addEventListener('click', () => {
     setTimeout(() => {
       const fb = document.getElementById('fmFeedback');
