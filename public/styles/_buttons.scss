@@ -18,7 +18,7 @@
 }
 .btn:hover {
   transform: translateY(-1px);
-  box-shadow: $glow-cyan;
+  box-shadow: 0 0 12px rgba($cyan, .8), 0 0 32px rgba($cyan, .35);
   background: rgba($cyan, .12);
 }
 .btn:active { transform: translateY(0); }
@@ -26,14 +26,14 @@
 .btn-mag {
   border-color: $magenta;
   color: $magenta;
-  &:hover { box-shadow: $glow-mag; background: rgba($magenta, .12); }
+  &:hover { box-shadow: 0 0 12px rgba($magenta, .8), 0 0 32px rgba($magenta, .35); background: rgba($magenta, .12); }
 }
 
 .btn-solid {
   background: $magenta;
   color: $cream;
   border-color: $magenta;
-  &:hover { background: color.adjust($magenta, $lightness: 6%); box-shadow: $glow-mag; color: $cream; }
+  &:hover { background: color.adjust($magenta, $lightness: 6%); box-shadow: 0 0 12px rgba($magenta, .8), 0 0 32px rgba($magenta, .35); color: $cream; }
 }
 
 .btn-ghost {

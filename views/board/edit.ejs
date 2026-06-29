@@ -34,11 +34,6 @@
       </section>
 
       <section class="panel">
-        <span class="eyebrow">stickers</span>
-        <div class="add-tray" id="stickerTray" style="margin-top:.5rem"></div>
-      </section>
-
-      <section class="panel">
         <span class="eyebrow">swatches</span>
         <div class="add-tray" id="swatchTray" style="margin-top:.5rem"></div>
       </section>
@@ -70,15 +65,11 @@
     <section class="canvas-shell editor-canvas">
       <div class="canvas" id="canvas"></div>
     </section>
-    <section class="editor-stack">
-      <div class="stack-editor" id="stackHost"></div>
-    </section>
   </div>
 </main>
 
 <%- include('../partials/footer') %>
 <script id="board-data" type="application/json"><%- JSON.stringify(board).replace(/</g, '\\u003c') %></script>
-<script id="stickers-data" type="application/json"><%- JSON.stringify(stickers).replace(/</g, '\\u003c') %></script>
 <script type="module" src="/js/canvas-editor.js"></script>
 </body>
 </html>

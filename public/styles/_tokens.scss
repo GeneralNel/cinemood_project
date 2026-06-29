@@ -11,8 +11,6 @@ $amber:   #ffb800;
 $blood:   #ff2a2a;
 
 $shadow-glow: 0 0 24px rgba($magenta, .35), 0 0 48px rgba($cyan, .15);
-$glow-cyan:   0 0 12px rgba($cyan, .8), 0 0 32px rgba($cyan, .35);
-$glow-mag:    0 0 12px rgba($magenta, .8), 0 0 32px rgba($magenta, .35);
 
 $face-display: 'Monoton', 'Impact', sans-serif;
 $face-body:    'IBM Plex Mono', 'Menlo', monospace;
@@ -39,20 +37,3 @@ $radius-lg: 18px;
 @mixin desktop { @media (min-width: #{$bp-desktop}) { @content; } }
 @mixin wide    { @media (min-width: #{$bp-wide})    { @content; } }
 
-@mixin scanlines($opacity: .12) {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, $opacity) 2px,
-    rgba(0, 0, 0, $opacity) 3px
-  );
-}
-
-@mixin chrome-text {
-  background: linear-gradient(180deg, $cream 0%, $cyan 45%, $magenta 55%, $cream 100%);
-  -webkit-background-clip: text;
-          background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 18px rgba($cyan, .25);
-}

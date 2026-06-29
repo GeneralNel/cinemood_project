@@ -12,7 +12,6 @@
   &::after {
     content: '';
     position: absolute; inset: 0;
-    @include scanlines(.08);
     pointer-events: none;
   }
 }
@@ -48,7 +47,6 @@
     font-family: $face-display;
     font-size: 2rem;
     letter-spacing: .02em;
-    @include chrome-text;
   }
   .handle {
     font-family: $face-hand;

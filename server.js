@@ -15,7 +15,6 @@ const authRoutes = require('./routes/auth');
 const boardsRoutes = require('./routes/boards');
 const filmsRoutes = require('./routes/films');
 const moodRoutes = require('./routes/mood');
-const feedRoutes = require('./routes/feed');
 const watchlistRoutes = require('./routes/watchlist');
 
 const app = express();
@@ -74,7 +73,6 @@ app.use('/', authRoutes);
 app.use('/api/boards', boardsRoutes);
 app.use('/api/films', filmsRoutes);
 app.use('/api/mood', moodRoutes);
-app.use('/api/feed', feedRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 
 app.use((req, res) => {

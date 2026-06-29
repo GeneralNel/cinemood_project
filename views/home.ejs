@@ -15,7 +15,7 @@
   <% } else if (boardQ) { %>
     <div class="bucket-strip">
       <span class="dot"></span>
-      <p class="greet">boards matching <strong>"<%= boardQ %>"</strong> · <em><%= tonight.length %> tape<%= tonight.length === 1 ? '' : 's' %></em></p>
+      <p class="greet">boards matching <strong>"<%= boardQ %>"</strong> · <em><%= boardResults.length %> tape<%= boardResults.length === 1 ? '' : 's' %></em></p>
       <a class="action-link" href="/">clear</a>
     </div>
   <% } else { %>
@@ -23,9 +23,9 @@
       <span class="dot"></span>
       <p class="greet">
         <% if (user) { %>
-          hey <strong>@<%= user.username %></strong> — it's <em><%= bucketLabel %></em>, here's what fits the hour.
+          hey <strong>@<%= user.username %></strong> — what are you in the mood for?
         <% } else { %>
-          it's <em><%= bucketLabel %></em> somewhere — these mixtapes fit the hour.
+          mood boards for movies — find your vibe.
         <% } %>
       </p>
       <details class="browse-boards">
@@ -89,13 +89,12 @@
     </div>
   <% } %>
 
-  <% if (tonight.length && !q) { %>
+  <% if (boardQ && boardResults.length) { %>
     <div class="section-head">
-      <h2><%= boardQ ? 'Boards found' : "Tonight's wall" %></h2>
-      <% if (!boardQ) { %><span class="blurb">tuned to <%= bucketLabel %></span><% } %>
+      <h2>Boards found</h2>
     </div>
     <div class="masonry">
-      <% tonight.forEach(b => { %>
+      <% boardResults.forEach(b => { %>
         <%- include('partials/pin', { board: b, showVis: false }) %>
       <% }) %>
     </div>
@@ -117,11 +116,11 @@
     <div class="empty-note">
       <p class="hand">no movies or series match "<%= q %>" — try another word.</p>
     </div>
-  <% } else if (boardQ && !tonight.length) { %>
+  <% } else if (boardQ && !boardResults.length) { %>
     <div class="empty-note">
       <p class="hand">no tapes match "<%= boardQ %>" — try a mood or slug.</p>
     </div>
-  <% } else if (!tonight.length && !fresh.length && !shelf.length && !q && !boardQ) { %>
+  <% } else if (!fresh.length && !shelf.length && !q && !boardQ) { %>
     <div class="empty-note">
       <p class="hand">nothing on the wall yet — be the first to tape one up.</p>
       <p>
@@ -140,6 +139,5 @@
 
 <%- include('partials/footer') %>
 <script type="module" src="/js/watchlist.js"></script>
-<script type="module" src="/js/rails.js"></script>
 </body>
 </html>

@@ -16,7 +16,6 @@
 }
 
 .hero h1 {
-  @include chrome-text;
   font-size: clamp(3.5rem, 12vw, 8rem);
   text-shadow: 0 0 28px rgba($cyan, .35);
 }
@@ -60,7 +59,6 @@
   content: '';
   position: absolute;
   inset: 0;
-  @include scanlines(.20);
 }
 
 .cassette-row {

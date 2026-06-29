@@ -14,7 +14,6 @@ if (copyBtn) {
 }
 const stickerMap = Object.fromEntries(stickerLib.map(s => [s.id, s.svg]));
 
-const shell = document.getElementById('viewerShell');
 const canvas = document.getElementById('viewerCanvas');
 
 function escapeHtml(s) {
@@ -44,65 +43,4 @@ function render() {
   }
 }
 
-let scale = 1, tx = 0, ty = 0;
-function applyTransform() {
-  canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-}
-
-function fitToShell() {
-  if (!boardData.elements || !boardData.elements.length) return;
-  let maxX = 0, maxY = 0;
-  for (const el of boardData.elements) {
-    const w = el.type === 'poster' ? 140 : el.type === 'note' ? 260 : 100;
-    const h = el.type === 'poster' ? 210 : el.type === 'note' ? 120 : 100;
-    maxX = Math.max(maxX, el.x + w * (el.scale || 1));
-    maxY = Math.max(maxY, el.y + h * (el.scale || 1));
-  }
-  if (maxX === 0 || maxY === 0) return;
-  const pad = 40;
-  const sx = (shell.clientWidth - pad) / maxX;
-  const sy = (shell.clientHeight - pad) / maxY;
-  scale = Math.min(1, Math.min(sx, sy));
-  tx = ty = 20;
-  applyTransform();
-}
-
-let pinch = null;
-shell.addEventListener('pointerdown', (e) => {
-  if (e.pointerType === 'mouse' && e.button !== 0) return;
-  shell.setPointerCapture(e.pointerId);
-  pinch = pinch || { pointers: new Map() };
-  pinch.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-});
-shell.addEventListener('pointermove', (e) => {
-  if (!pinch || !pinch.pointers.has(e.pointerId)) return;
-  const prev = pinch.pointers.get(e.pointerId);
-  if (pinch.pointers.size === 1) {
-    tx += e.clientX - prev.x;
-    ty += e.clientY - prev.y;
-    applyTransform();
-  }
-  pinch.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-});
-const end = (e) => {
-  if (pinch) pinch.pointers.delete(e.pointerId);
-};
-shell.addEventListener('pointerup', end);
-shell.addEventListener('pointercancel', end);
-
-shell.addEventListener('wheel', (e) => {
-  e.preventDefault();
-  const rect = shell.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  const factor = e.deltaY < 0 ? 1.1 : 0.9;
-  const newScale = Math.max(0.2, Math.min(3, scale * factor));
-  tx = mx - (mx - tx) * (newScale / scale);
-  ty = my - (my - ty) * (newScale / scale);
-  scale = newScale;
-  applyTransform();
-}, { passive: false });
-
 render();
-fitToShell();
-window.addEventListener('resize', fitToShell);

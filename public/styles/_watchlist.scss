@@ -21,7 +21,6 @@
     font-family: $face-display;
     letter-spacing: .04em;
     font-size: 1.05rem;
-    @include chrome-text;
   }
   .count {
     font-family: $face-body;
@@ -59,7 +58,6 @@
     &::after {
       content: '';
       position: absolute; inset: 0;
-      @include scanlines(.16);
       pointer-events: none;
     }
   }

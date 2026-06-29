@@ -47,7 +47,6 @@
   content: '';
   position: absolute;
   inset: 0;
-  @include scanlines(.18);
 }
 
 .board-card .meta {

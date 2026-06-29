@@ -7,7 +7,7 @@
   margin-bottom: $step-6;
   @include tablet { flex-direction: row; align-items: end; justify-content: space-between; }
 }
-.dash-head h1 { @include chrome-text; }
+.dash-head h1 { }
 .dash-head .who { color: rgba($cream, .65); font-size: .9rem; }
 
 .dash-empty {

@@ -63,7 +63,7 @@
     width: 8px; height: 8px;
     background: $magenta;
     border-radius: 50%;
-    box-shadow: $glow-mag;
+    box-shadow: 0 0 12px rgba($magenta, .8), 0 0 32px rgba($magenta, .35);
   }
   .greet {
     font-family: $face-hand;
@@ -115,7 +115,6 @@
     font-family: $face-display;
     font-size: 1.4rem;
     letter-spacing: .03em;
-    @include chrome-text;
   }
   .blurb {
     font-family: $face-hand;

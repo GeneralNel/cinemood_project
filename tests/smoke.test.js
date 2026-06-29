@@ -1,7 +1,6 @@
 const request = require('supertest');
 const { startTestDb, stopTestDb, reset } = require('./setup');
 const { toTmdbParams } = require('../services/moodToTags');
-const { bucketFor } = require('../services/tonight');
 const { kebab } = require('../services/slug');
 
 let app, User;
@@ -60,8 +59,6 @@ test('moodToTags maps cards + dials to TMDB params', () => {
   expect(p.with_genres.split(',')).toEqual(expect.arrayContaining(['18', '28', '27']));
 });
 
-test('tonight bucket + slug helpers', () => {
-  expect(bucketFor(20)).toBe('evening');
-  expect(bucketFor(3)).toBe('night');
+test('slug helper', () => {
   expect(kebab('Rainy Sunday!')).toBe('rainy-sunday');
 });

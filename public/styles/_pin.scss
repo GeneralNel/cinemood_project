@@ -28,7 +28,6 @@
     content: '';
     position: absolute;
     inset: 0;
-    @include scanlines(.14);
     pointer-events: none;
   }
 }

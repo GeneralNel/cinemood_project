@@ -8,14 +8,8 @@ let pickedFilms = new Set();
 
 function wireDial(el) {
   const slider = el.querySelector('input[type=range]');
-  const needle = el.querySelector('.needle');
   const name = el.dataset.dial;
-  const update = () => {
-    const v = Number(slider.value);
-    dialState[name] = v;
-    const deg = -120 + (v / 100) * 240;
-    needle.style.transform = `translate(-50%, -100%) rotate(${deg}deg)`;
-  };
+  const update = () => { dialState[name] = Number(slider.value); };
   slider.addEventListener('input', update);
   update();
 }
@@ -28,7 +22,6 @@ async function loadCards(host) {
     b.type = 'button';
     b.className = 'mood-card';
     b.textContent = c.label;
-    b.style.setProperty('--tilt', `${c.tilt || 0}deg`);
     b.dataset.id = c.id;
     b.addEventListener('click', () => togglePick(b, c.id));
     host.appendChild(b);

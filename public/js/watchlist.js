@@ -1,16 +1,5 @@
 const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
-function toast(msg, kind) {
-  const wrap = document.getElementById('toastWrap');
-  if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = 'toast' + (kind ? ' ' + kind : '');
-  el.textContent = msg;
-  wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(8px)'; }, 1600);
-  setTimeout(() => el.remove(), 2000);
-}
-
 async function api(method, path, body) {
   const res = await fetch(path, {
     method,
@@ -19,7 +8,6 @@ async function api(method, path, body) {
     credentials: 'same-origin'
   });
   if (res.status === 401) {
-    toast('log in to use your watchlist');
     throw new Error('auth');
   }
   if (!res.ok) throw new Error('api ' + res.status);
@@ -63,7 +51,6 @@ document.addEventListener('click', async (e) => {
       await api('DELETE', `/api/watchlist/${id}`);
       card?.remove();
       updateCount(-1);
-      toast('removed from watchlist');
       const rail = document.querySelector('[data-watch-rail]');
       const empty = document.querySelector('[data-watch-empty]');
       if (rail && !rail.children.length && !empty) {
@@ -95,11 +82,7 @@ document.addEventListener('click', async (e) => {
     add.classList.add('on');
     try {
       const r = await api('POST', '/api/watchlist', payload);
-      if (r.already) {
-        toast('already on your watchlist');
-        return;
-      }
-      toast('saved to watchlist');
+      if (r.already) return;
       const rail = document.querySelector('[data-watch-rail]');
       const empty = document.querySelector('[data-watch-empty]');
       const item = r.item || payload;

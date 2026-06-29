@@ -1,12 +1,8 @@
 import { api } from './api.js';
 
 const boardData = JSON.parse(document.getElementById('board-data').textContent);
-const stickerLib = JSON.parse(document.getElementById('stickers-data').textContent || '[]');
-const stickerMap = Object.fromEntries(stickerLib.map(s => [s.id, s.svg]));
 
 const canvas = document.getElementById('canvas');
-const stackHost = document.getElementById('stackHost');
-const isMobile = matchMedia('(max-width: 760px)').matches;
 const titleInput = document.getElementById('boardTitle');
 const tagsInput = document.getElementById('boardTags');
 const visibilityBtn = document.getElementById('visibilityBtn');
@@ -17,7 +13,6 @@ const layerDownBtn = document.getElementById('layerDown');
 const dropBtn = document.getElementById('deleteSelBtn');
 const filmSearch = document.getElementById('filmSearch');
 const filmSearchResults = document.getElementById('filmSearchResults');
-const stickerTray = document.getElementById('stickerTray');
 const swatchTray = document.getElementById('swatchTray');
 const addNoteBtn = document.getElementById('addNote');
 const status = document.getElementById('saveStatus');
@@ -44,58 +39,7 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 
-function describe(el) {
-  if (el.type === 'poster') return { title: el.payload.title || 'film', sub: el.payload.year || '', thumb: el.payload.poster };
-  if (el.type === 'sticker') return { title: 'sticker', sub: el.payload.stickerId, svg: stickerMap[el.payload.stickerId] };
-  if (el.type === 'swatch') return { title: 'swatch', sub: el.payload.color, color: el.payload.color };
-  if (el.type === 'note') return { title: 'note', sub: (el.payload.text || '').slice(0, 30) };
-  return { title: el.type, sub: '' };
-}
-
-function renderStack() {
-  stackHost.innerHTML = '';
-  const sorted = [...state.elements].sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
-  if (!sorted.length) {
-    stackHost.innerHTML = '<p class="handwritten" style="text-align:center;opacity:.6">add films, stickers, or notes from the panels above</p>';
-    return;
-  }
-  sorted.forEach((el, i) => {
-    const d = describe(el);
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.dataset.id = el.id;
-    row.innerHTML = `
-      <button class="grip" data-act="up" type="button" aria-label="up">▲</button>
-      <button class="grip" data-act="down" type="button" aria-label="down">▼</button>
-      <div class="thumb">
-        ${d.thumb ? `<img src="${d.thumb}" alt="">` : d.svg ? d.svg : d.color ? `<div style="width:100%;height:100%;background:${d.color}"></div>` : ''}
-      </div>
-      <div class="body">
-        <span class="title">${d.title}</span>
-        <span class="sub">${d.sub || ''}</span>
-      </div>
-      <button class="kill" data-act="kill" type="button">Remove</button>
-    `;
-    row.addEventListener('click', (e) => {
-      const act = e.target.closest('[data-act]')?.dataset.act;
-      if (act === 'kill') {
-        state.elements = state.elements.filter(x => x.id !== el.id);
-      } else if (act === 'up' && i > 0) {
-        const above = sorted[i - 1];
-        const tmp = el.zIndex; el.zIndex = above.zIndex; above.zIndex = tmp;
-      } else if (act === 'down' && i < sorted.length - 1) {
-        const below = sorted[i + 1];
-        const tmp = el.zIndex; el.zIndex = below.zIndex; below.zIndex = tmp;
-      } else return;
-      mark();
-      renderStack();
-    });
-    stackHost.appendChild(row);
-  });
-}
-
 function render() {
-  if (isMobile && stackHost) { renderStack(); return; }
   canvas.innerHTML = '';
   for (const el of state.elements) {
     const node = document.createElement('div');
@@ -108,8 +52,6 @@ function render() {
 
     if (el.type === 'poster') {
       node.innerHTML = `${el.payload.poster ? `<img src="${el.payload.poster}" alt="" draggable="false">` : ''}`;
-    } else if (el.type === 'sticker') {
-      node.innerHTML = stickerMap[el.payload.stickerId] || '';
     } else if (el.type === 'swatch') {
       node.style.background = el.payload.color || '#ff006e';
     } else if (el.type === 'note') {
@@ -215,21 +157,6 @@ function addElement(el) {
   mark();
 }
 
-function buildStickerTray() {
-  stickerTray.innerHTML = '';
-  stickerLib.forEach(s => {
-    const chip = document.createElement('button');
-    chip.type = 'button';
-    chip.className = 'sticker-chip';
-    chip.innerHTML = s.svg;
-    chip.title = s.id;
-    chip.addEventListener('click', () => {
-      addElement({ type: 'sticker', payload: { stickerId: s.id } });
-    });
-    stickerTray.appendChild(chip);
-  });
-}
-
 function buildSwatchTray() {
   swatchTray.innerHTML = '';
   SWATCHES.forEach(c => {
@@ -331,12 +258,9 @@ deleteBtn?.addEventListener('click', async () => {
   location.href = '/dashboard';
 });
 
-window.addEventListener('beforeunload', (e) => { if (dirty) e.preventDefault(); });
-
 canvas.addEventListener('pointerdown', (e) => {
   if (e.target === canvas) { selectedId = null; render(); }
 });
 
-buildStickerTray();
 buildSwatchTray();
 render();

@@ -9,26 +9,6 @@ const HOME_CHIPS = [
   'autumn-dread', 'lonely-apt', 'dinner-party'
 ];
 
-const BUCKET_TAGS = {
-  morning:   ['spring-renewal', 'road-trip', 'friday-recharge', 'just-paid', 'need-laugh'],
-  afternoon: ['need-laugh', 'just-paid', 'dinner-party', 'first-date', 'summer-fever'],
-  evening:   ['red-wine-rain', 'dinner-party', 'glow-up', 'neon-noir', 'first-date', 'need-cry'],
-  night:     ['3am', 'lonely-apt', 'existential', 'autumn-dread', 'neon-noir', 'red-wine-rain']
-};
-
-const BUCKET_LABEL = {
-  morning: 'morning',
-  afternoon: 'afternoon',
-  evening: 'evening',
-  night: 'late night'
-};
-
-function bucketFor(hour) {
-  if (hour >= 5 && hour <= 11) return 'morning';
-  if (hour >= 12 && hour <= 17) return 'afternoon';
-  if (hour >= 18 && hour <= 22) return 'evening';
-  return 'night';
-}
 
 function chipsForHome() {
   const mc = require('../data/moodCards.json');
@@ -41,18 +21,14 @@ router.get('/', async (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 80);
   const boardQ = String(req.query.board_q || '').trim().slice(0, 80);
   const activeMood = String(req.query.mood || '').trim().slice(0, 40);
-  const bucket = bucketFor(new Date().getHours());
-  const bucketLabel = BUCKET_LABEL[bucket];
 
   const ctx = {
     q,
     boardQ,
     activeMood,
-    bucket,
-    bucketLabel,
     moodChips: chipsForHome(),
     shelf: [],
-    tonight: [],
+    boardResults: [],
     fresh: [],
     watchlist: [],
     films: []
@@ -79,7 +55,7 @@ router.get('/', async (req, res) => {
           { $or: [{ title: rx }, { moodTags: rx }, { slug: rx }] }
         ]
       };
-      ctx.tonight = await Board.find(filter)
+      ctx.boardResults = await Board.find(filter)
         .sort('-updatedAt')
         .limit(60)
         .populate('owner', 'username displayName')
@@ -95,15 +71,7 @@ router.get('/', async (req, res) => {
       ctx.watchlist = ((u && u.watchlist) || []).slice(0, 24);
     }
 
-    const tags = activeMood ? [activeMood] : BUCKET_TAGS[bucket];
-    ctx.tonight = await Board.find({ visibility: 'public', moodTags: { $in: tags } })
-      .sort('-updatedAt')
-      .limit(24)
-      .populate('owner', 'username displayName')
-      .lean();
-
-    const tonightIds = ctx.tonight.map(b => b._id);
-    ctx.fresh = await Board.find({ visibility: 'public', _id: { $nin: tonightIds } })
+    ctx.fresh = await Board.find({ visibility: 'public' })
       .sort('-updatedAt')
       .limit(24)
       .populate('owner', 'username displayName')
@@ -116,16 +84,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/dashboard', requireAuth, (req, res) => {
-  res.redirect('/u/' + req.session.user.username);
-});
-
 router.get('/create', requireAuth, (req, res) => {
   res.render('compose');
-});
-
-router.get('/settings', requireAuth, (req, res) => {
-  res.render('settings');
 });
 
 router.get('/board/:slug/edit', requireAuth, async (req, res, next) => {
