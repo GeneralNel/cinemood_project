@@ -1,10 +1,14 @@
 const router = require('express').Router();
-const { recommend } = require('../services/recommend');
+const tmdb = require('../services/tmdb');
+const { toTmdbParams, deriveTags } = require('../services/moodToTags');
 
 router.post('/recommend', async (req, res, next) => {
   try {
-    const out = await recommend(req.body || {});
-    res.json(out);
+    const input = req.body || {};
+    const params = toTmdbParams(input);
+    const films = await tmdb.discover(params);
+    await tmdb.cacheMany(films);
+    res.json({ results: films, tags: deriveTags(input), params });
   } catch (e) { next(e); }
 });
 

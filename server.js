@@ -8,7 +8,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 
 const { connectDb } = require('./config/db');
-const csrf = require('./middleware/csrf');
+const { csrf } = require('./middleware');
 
 const pagesRoutes = require('./routes/pages');
 const authRoutes = require('./routes/auth');

@@ -71,10 +71,10 @@ For TMDB, register at themoviedb.org → settings → API → request a v3 key.
 ```
 server.js               app entry + middleware
 config/db.js            Mongo connect
-middleware/             csrf, requireAuth, rateLimit, validate
+middleware/             csrf, requireAuth, rateLimit, validate guards
 models/                 User, Board, FilmCache
 routes/                 auth, pages, boards, films, mood, watchlist
-services/               tmdb, recommend, moodToTags, slug
+services/               tmdb, moodToTags, slug
 views/                  EJS templates
 public/styles/          SASS source (compiles to main.css)
 public/js/              vanilla ES modules

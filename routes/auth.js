@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const { body } = require('express-validator');
 const User = require('../models/User');
-const { htmlGuard } = require('../middleware/validate');
-const { authLimiter } = require('../middleware/rateLimit');
+const { htmlGuard, authLimiter } = require('../middleware');
 
 router.get('/signup', (req, res) => {
   if (req.session.user) return res.redirect('/');

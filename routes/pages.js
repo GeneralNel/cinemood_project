@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
-const requireAuth = require('../middleware/requireAuth');
+const { requireAuth } = require('../middleware');
 const tmdb = require('../services/tmdb');
 
 const HOME_CHIPS = [

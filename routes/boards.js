@@ -5,8 +5,7 @@ const crypto = require('crypto');
 const Board = require('../models/Board');
 const tmdb = require('../services/tmdb');
 const { unique } = require('../services/slug');
-const requireAuth = require('../middleware/requireAuth');
-const { jsonGuard } = require('../middleware/validate');
+const { requireAuth, jsonGuard } = require('../middleware');
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
